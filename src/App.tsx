@@ -1,13 +1,20 @@
-import Avatar from "./components/Avatar"
-import { Button } from "./components/ui/button"
+import { HashRouter, Route, Routes } from "react-router"
+import Home from "./pages/Home"
+import Setting from "./pages/Setting"
+import Layout from "./Layout"
+
 
 const App = () => {
 
   return (
-    <div className="w-96 h-screen">
-      <Avatar />
-      <Button>Tes</Button>
-    </div>
+     <HashRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="setting" element={<Setting />} />
+        </Route>
+      </Routes>
+    </HashRouter>
   )
 }
 
