@@ -9,7 +9,7 @@ const Activity = () => {
                     <p className='text-lg'>Received</p>
                     <p className='text-zinc-500 text-sm'>Aug 21</p>
                 </div>
-                <p className='text-zinc-500 text-base'>20.1 USDC from 0xcD2b...3399</p>
+                <p className='text-zinc-500 text-sm'>20.1 USDC from 0xcD2b...3399</p>
             </div>
         </div>
     )
