@@ -13,7 +13,7 @@ const Phrase = () => {
                 <SeedPhrase />
             </div>
             <p className="my-5 text-center text-zinc-500">Anyone who knows your recovery phrase can access your wallet and funds.</p>
-            <Button className="absolute bottom-0 w-full py-6 bg-red-500 text-white hover:bg-red-500/70 rounded-xl" onClick={() => navigate("/")}>
+            <Button variant={"destructive"} className="absolute bottom-0 w-full py-6 rounded-xl" onClick={() => navigate("/")}>
                 Back to Main page
             </Button>
         </div>

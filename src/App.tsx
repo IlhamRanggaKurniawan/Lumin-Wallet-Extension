@@ -6,7 +6,10 @@ import Verify from "./pages/password/Verify"
 import Update from "./pages/password/Update"
 import Warning from "./pages/phrase/Warning"
 import Phrase from "./pages/phrase/Phrase"
+import Onboarding from "./pages/Onboarding"
 import NewWallet from "./pages/auth/NewWallet"
+import Import from "./pages/auth/Import"
+import NewPassword from "./pages/auth/NewPassword"
 
 
 const App = () => {
@@ -21,7 +24,10 @@ const App = () => {
           <Route path="setting/password/update" element={<Update />} />
           <Route path="setting/phrase/warning" element={<Warning />} />
           <Route path="setting/phrase" element={<Phrase />} />
-          <Route path="/register" element={<NewWallet />} />
+          <Route path="/onboarding" element={<Onboarding />} />
+          <Route path="/onboarding/create" element={<NewWallet />} />
+          <Route path="/onboarding/import" element={<Import />} />
+          <Route path="/onboarding/import/password" element={<NewPassword />} />
         </Route>
       </Routes>
     </HashRouter>

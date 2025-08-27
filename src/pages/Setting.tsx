@@ -5,8 +5,11 @@ import CurrencySelect from "@/components/select/CurrencySelect"
 import LanguageSelect from "@/components/select/LanguageSelect"
 import { Button } from "@/components/ui/button"
 import Header from "@/components/Header"
+import { useNavigate } from "react-router"
 
 const Setting = () => {
+  const navigate = useNavigate()
+
   return (
     <div className="text-base h-full min-h-[calc(100vh-32px)] relative">
       <Header title="Settings" href="/"/>
@@ -27,7 +30,7 @@ const Setting = () => {
         </div>
       </div>
       <p className="text-zinc-500 font-semibold text-xs py-4">Version 1.0.0</p>
-      <Button className="absolute bottom-0 w-full py-6">
+      <Button className="absolute bottom-0 w-full py-6" onClick={() => navigate("/onboarding")}>
         <Lock />
         Lock Wallet
       </Button>

@@ -1,17 +1,18 @@
-import Header from "@/components/Header"
-import Input from "@/components/Input"
-import { Button } from "@/components/ui/button"
-import { Eye, LockKeyhole } from "lucide-react"
-import { useNavigate } from "react-router"
+import Header from '@/components/Header'
+import Input from '@/components/Input'
+import { Button } from '@/components/ui/button'
+import { Eye, LockKeyhole } from 'lucide-react'
+import { useNavigate } from 'react-router'
 
-const NewWallet = () => {
+const NewPassword = () => {
 
-    const navigate = useNavigate()
+        const navigate = useNavigate()
 
+    
     return (
         <div className="flex flex-col justify-between h-full min-h-[calc(100vh-32px)]">
             <div>
-                <Header title="Create Account" />
+                <Header title="Create Password" />
                 <div className="pt-12">
                     <div className="aspect aspect-square w-fit p-4 bg-accent rounded-xl mx-auto">
                         <LockKeyhole />
@@ -30,4 +31,4 @@ const NewWallet = () => {
     )
 }
 
-export default NewWallet
+export default NewPassword

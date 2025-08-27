@@ -9,7 +9,7 @@ const Warning = () => {
             <Header title='Recovery Phrase' />
             <RecoveryPhraseWarning />
             <PhraseValidationDialog>
-                <Button className="absolute bottom-0 w-full py-6 bg-red-500 text-primary hover:bg-red-500/70">
+                <Button className="absolute bottom-0 w-full py-6" variant={"destructive"}>
                     Continue
                 </Button>
             </PhraseValidationDialog>
