@@ -5,7 +5,7 @@ import { useNavigate } from "react-router"
 const Onboarding = () => {
 
     const navigate = useNavigate()
-
+  
     return (
         <div className="w-full text-base h-full min-h-[calc(100vh-32px)] flex flex-col justify-between">
             <div className="w-full h-full flex items-center justify-center">

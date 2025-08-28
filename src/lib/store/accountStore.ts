@@ -14,14 +14,14 @@ const useAccountStore = create<accountStore>()(
         (set) => ({
             address: "",
             pubKey: "",
-            setAddress: (address) => {
-                set({ address })
-            },
             setPubKey: (key) => {
                 set({ pubKey: key })
+            },
+            setAddress: (address) => {
+                set({ address })
             }
         }),
-        { 
+        {
             name: "account-storage"
         }
     )

@@ -7,8 +7,6 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { CircleArrowDown, Send } from 'lucide-react'
 
 const Home = () => {
-
-
     return (
         <div className="w-full">
             <Profile />

@@ -1,15 +1,47 @@
 import Header from "@/components/Header"
 import Input from "@/components/Input"
 import { Button } from "@/components/ui/button"
-import { Eye, LockKeyhole } from "lucide-react"
+import { importOrCreateWallet } from "@/lib/account"
+import useAuthStore from "@/lib/store/authStore"
+import { Eye, EyeOff, LockKeyhole } from "lucide-react"
+import { useState } from "react"
 import { useNavigate } from "react-router"
 
 const NewWallet = () => {
-
+    const [error, setError] = useState("")
+    const [password, setPassword] = useState({
+        newPassword: "",
+        confirmPassword: ""
+    })
+    const [showPassword, setShowPassword] = useState({
+        newPassword: false,
+        confirmPassword: false
+    })
     const navigate = useNavigate()
+    const {toggleLoggedIn} = useAuthStore()
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+
+        if(password.newPassword.length < 8) {
+            return setError("Password should be minimum 8 characters")
+        }
+
+        if (password.newPassword !== password.confirmPassword) {
+            return setError("Password doen't match")
+        }
+
+        const data = await importOrCreateWallet(password.newPassword)
+
+        toggleLoggedIn()
+        chrome.runtime.sendMessage({ type: "SET_MNEMONIC", value: data })
+
+        navigate("/")
+    }
+
 
     return (
-        <div className="flex flex-col justify-between h-full min-h-[calc(100vh-32px)]">
+        <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col justify-between h-full min-h-[calc(100vh-32px)]">
             <div>
                 <Header title="Create Account" />
                 <div className="pt-12">
@@ -19,14 +51,32 @@ const NewWallet = () => {
                     <p className="text-zinc-500 text-center text-sm w-[80%] mx-auto py-4">You’ll need this to unlock your wallet and access your recovery phrase</p>
                 </div>
                 <div className="space-y-5">
-                    <Input Icon={Eye} placeholder="New Password" />
-                    <Input Icon={Eye} placeholder="Confirm Password" />
+                    <Input
+                        Icon={showPassword.newPassword ? EyeOff : Eye}
+                        value={password.newPassword}
+                        placeholder='New Password'
+                        required
+                        onChange={(e) => setPassword({ ...password, newPassword: e.target.value })}
+                        autoFocus
+                        type={showPassword.newPassword ? "text" : "password"}
+                        handleClick={() => setShowPassword({ ...showPassword, newPassword: !showPassword.newPassword })}
+                    />
+                    <Input
+                        Icon={showPassword.confirmPassword ? EyeOff : Eye}
+                        value={password.confirmPassword}
+                        placeholder='Confirm Password'
+                        required
+                        onChange={(e) => setPassword({ ...password, confirmPassword: e.target.value })}
+                        type={showPassword.confirmPassword ? "text" : "password"}
+                        handleClick={() => setShowPassword({ ...showPassword, confirmPassword: !showPassword.confirmPassword })}
+                    />
+                    <p className="text-red-500">{error}</p>
                 </div>
             </div>
-            <Button className="py-6" variant={"outline"} onClick={() => navigate("/")}>
+            <Button className="py-6" variant={"outline"}>
                 Continue
             </Button>
-        </div>
+        </form>
     )
 }
 

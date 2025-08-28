@@ -6,9 +6,16 @@ import LanguageSelect from "@/components/select/LanguageSelect"
 import { Button } from "@/components/ui/button"
 import Header from "@/components/Header"
 import { useNavigate } from "react-router"
+import useAuthStore from "@/lib/store/authStore"
 
 const Setting = () => {
+  const {toggleLoggedIn} = useAuthStore()
   const navigate = useNavigate()
+
+  const handleClick = () => {
+      toggleLoggedIn()
+      navigate("/onboarding") 
+  }
 
   return (
     <div className="text-base h-full min-h-[calc(100vh-32px)] relative">
@@ -30,7 +37,7 @@ const Setting = () => {
         </div>
       </div>
       <p className="text-zinc-500 font-semibold text-xs py-4">Version 1.0.0</p>
-      <Button className="absolute bottom-0 w-full py-6" onClick={() => navigate("/onboarding")}>
+      <Button className="absolute bottom-0 w-full py-6" onClick={handleClick}>
         <Lock />
         Lock Wallet
       </Button>
