@@ -38,3 +38,22 @@ export const encryptData = async (data: string, key: CryptoKey, iv: Uint8Array) 
     return new Uint8Array(encrypted)
 }
 
+export const decryptData = async (ciphertext: Uint8Array, key: CryptoKey, iv: Uint8Array) => {
+    try {
+         const decrypted = await crypto.subtle.decrypt(
+        {
+            name: "AES-GCM",
+            iv: iv as BufferSource
+        },
+        key,
+        ciphertext as BufferSource
+    )
+
+    const decoder = new TextDecoder()
+    return decoder.decode(decrypted)
+    
+    } catch {
+        throw new Error("Wrong Password")
+    }
+   
+}

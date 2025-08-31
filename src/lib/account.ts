@@ -1,9 +1,15 @@
 import { english, generateMnemonic } from "viem/accounts"
-import { deriveKey, encryptData, getRandomBytes } from "./utils/crypto"
-import { toHex } from "./utils/hex"
+import { decryptData, deriveKey, encryptData, getRandomBytes } from "./utils/crypto"
+import { fromHex, toHex } from "./utils/hex"
+
+type encryptedMnemonic = {
+    ciphertext: string,
+    iv: string,
+    salt: string
+}
 
 
-export const importOrCreateWallet = async (password: string, phrase?: string) => {
+export const importOrCreateWallet = async (password: string, phrase?: string): Promise<encryptedMnemonic> => {
     if (!phrase) {
         phrase = generateMnemonic(english)
     }
@@ -21,6 +27,28 @@ export const importOrCreateWallet = async (password: string, phrase?: string) =>
         iv: toHex(iv),
         salt: toHex(salt),
     }
+}
+
+export const getMnemonic = async (password: string, encrypted: encryptedMnemonic) => {
+    const key = await deriveKey(password, fromHex(encrypted.salt))
+    const decrypted = await decryptData(fromHex(encrypted.ciphertext), key, fromHex(encrypted.iv))
+
+    if (!validateMnemonicPhrase(decrypted)) {
+        throw new Error("Invalid mnemonic")
+    }
+
+    return decrypted
+}
+
+export const validatePassword = async (password: string, encrypted: encryptedMnemonic) => {
+    const key = await deriveKey(password, fromHex(encrypted.salt))
+    const decrypted = await decryptData(fromHex(encrypted.ciphertext), key, fromHex(encrypted.iv))
+
+    if (!validateMnemonicPhrase(decrypted)) {
+        throw new Error("Invalid mnemonic")
+    }
+
+    return validateMnemonicPhrase(decrypted)
 }
 
 export const validateMnemonicPhrase = (phrase: string) => {

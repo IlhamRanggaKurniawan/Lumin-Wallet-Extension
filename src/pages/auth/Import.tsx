@@ -4,6 +4,7 @@ import PhraseInput from '@/components/PhraseInput'
 import { Button } from '@/components/ui/button'
 import { importOrCreateWallet, validateMnemonicPhrase } from '@/lib/account'
 import useAuthStore from '@/lib/store/authStore'
+import { storage } from '@/lib/utils/storage'
 import { Eye, EyeOff, FileLock2, LockKeyhole } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
@@ -21,7 +22,7 @@ const Import = () => {
         confirmPassword: false
     })
     const navigate = useNavigate()
-    const { toggleLoggedIn } = useAuthStore()
+    const { login } = useAuthStore()
 
     const handleChange = (index: number, value: string) => {
         const cleaned = value.trim().split(" ")[0] || ""
@@ -73,8 +74,9 @@ const Import = () => {
 
         const data = await importOrCreateWallet(password.newPassword, words.join(" ").trim())
 
-        toggleLoggedIn()
-        chrome.runtime.sendMessage({ type: "SET_MNEMONIC", value: data })
+        login()
+
+        await storage.setItem("mnemonic", data, "local")
 
         navigate("/")
     }

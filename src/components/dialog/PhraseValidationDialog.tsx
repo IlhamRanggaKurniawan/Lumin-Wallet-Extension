@@ -1,19 +1,38 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog'
 import { Eye, EyeOff, LockKeyhole } from 'lucide-react'
 import Input from '../Input'
 import { Button } from '../ui/button'
 import { useNavigate } from 'react-router'
+import { storage } from '@/lib/utils/storage'
+import { validatePassword } from '@/lib/account'
 
-const PhraseValidationDialog = ({ children }: { children: React.ReactNode }) => {
+const PhraseValidationDialog = () => {
     const [showPassword, setShowPassword] = useState(false)
     const [password, setPassword] = useState("")
+    const [error, setError] = useState("")
+
+    const validate = async () => {
+        try {
+            const encryptedMnemonic = await storage.getItem("mnemonic", "local")
+
+            const isValid = await validatePassword(password, encryptedMnemonic)
+
+            if (isValid) {
+                navigate("/setting/phrase", { replace: true, state: { password } })
+            }
+        } catch {
+            setError("Wrong Password")
+        }
+    }
 
     const navigate = useNavigate()
     return (
         <Dialog>
             <DialogTrigger asChild>
-                {children}
+                <Button className="absolute bottom-0 w-full py-6" variant={"destructive"}>
+                    Continue
+                </Button>
             </DialogTrigger>
             <DialogContent showCloseButton={false} className='!max-w-sm text-base'>
                 <div className='w-full flex flex-col items-center justify-center gap-5'>
@@ -31,7 +50,8 @@ const PhraseValidationDialog = ({ children }: { children: React.ReactNode }) => 
                     type={showPassword ? "text" : "password"}
                     handleClick={() => setShowPassword(!showPassword)}
                 />
-                <Button className='mt-8 py-6' variant={"destructive"} onClick={() => navigate("/setting/phrase")}>
+                <p className='text-sm font-light text-red-500'>{error}</p>
+                <Button className='mt-8 py-6' variant={"destructive"} onClick={() => validate()}>
                     Continue
                 </Button>
             </DialogContent>

@@ -9,12 +9,12 @@ import { useNavigate } from "react-router"
 import useAuthStore from "@/lib/store/authStore"
 
 const Setting = () => {
-  const {toggleLoggedIn} = useAuthStore()
+  const {logout} = useAuthStore()
   const navigate = useNavigate()
 
   const handleClick = () => {
-      toggleLoggedIn()
-      navigate("/onboarding") 
+      logout()
+      navigate("/login") 
   }
 
   return (

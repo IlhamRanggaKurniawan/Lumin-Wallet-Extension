@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "ext": "nodemon --watch src --ext ts,tsx,js,jsx --exec \"vite build\"",
+    "ext": "nodemon --watch src --ext ts,tsx,js,jsx --exec \"vite build --mode extension\"",
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build --mode extension",
     "lint": "eslint .",
     "preview": "vite preview"
   },

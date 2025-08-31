@@ -1,15 +1,16 @@
 import { HashRouter, Route, Routes } from "react-router"
+import { ThemeProvider } from "./components/theme-provider"
+import { Layout } from "./Layout"
 import Home from "./pages/Home"
-import Setting from "./pages/Setting"
-import Verify from "./pages/password/Verify"
-import Update from "./pages/password/Update"
-import Warning from "./pages/phrase/Warning"
-import Phrase from "./pages/phrase/Phrase"
+import Setting from "./pages/setting/Setting"
+import Verify from "./pages/setting/password/Verify"
+import Update from "./pages/setting/password/Update"
+import Warning from "./pages/setting/phrase/Warning"
+import Phrase from "./pages/setting/phrase/Phrase"
 import Onboarding from "./pages/Onboarding"
 import NewWallet from "./pages/auth/NewWallet"
 import Import from "./pages/auth/Import"
-import { GuestLayout, PrivateLayout } from "./Layout"
-import { ThemeProvider } from "./components/theme-provider"
+import Login from "./pages/auth/Login"
 
 
 const App = () => {
@@ -18,19 +19,17 @@ const App = () => {
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
       <HashRouter>
         <Routes>
-          <Route path="/" element={<PrivateLayout />}>
+          <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="setting" element={<Setting />} />
             <Route path="setting/password" element={<Verify />} />
             <Route path="setting/password/update" element={<Update />} />
             <Route path="setting/phrase/warning" element={<Warning />} />
             <Route path="setting/phrase" element={<Phrase />} />
-          </Route>
-
-          <Route path="/onboarding" element={<GuestLayout />}>
-            <Route index element={<Onboarding />} />
-            <Route path="create" element={<NewWallet />} />
-            <Route path="import" element={<Import />} />
+            <Route path="onboarding" element={<Onboarding />} />
+            <Route path="onboarding/create" element={<NewWallet />} />
+            <Route path="onboarding/import" element={<Import />} />
+            <Route path="login" element={<Login />} />
           </Route>
         </Routes>
       </HashRouter>

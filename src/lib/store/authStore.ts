@@ -1,27 +1,33 @@
 import { create } from "zustand"
+import { storage } from "../utils/storage";
 
 type authStore = {
     isLoggedIn: boolean | null,
-    toggleLoggedIn: () => void,
+    login: () => void
+    logout: () => void,
     initialize: () => void;
 }
 
-const useAuthStore = create<authStore>()((set, get) => ({
+const useAuthStore = create<authStore>()((set) => ({
     isLoggedIn: null,
-    toggleLoggedIn: () => {
-        const { isLoggedIn } = get()
-        if (isLoggedIn === false) {
-            chrome.runtime.sendMessage({ type: "LOGIN" })
-            set({ isLoggedIn: true })
-        } else {
-            chrome.runtime.sendMessage({ type: "LOGOUT" })
-            set({ isLoggedIn: false })
-        }
+    login: () => {
+        storage.setItem("isLoggedIn", true, "session")
+        set({ isLoggedIn: true })
     },
-    initialize: () => {
-        chrome.runtime.sendMessage({ type: "GET_SESSION" }, (res) => {
-            set({ isLoggedIn: res.value });
-        });
+    logout: () => {
+        storage.setItem("isLoggedIn", false, "session")
+        set({ isLoggedIn: false })
+    },
+    initialize: async () => {
+        const data = await storage.getItem<boolean>("isLoggedIn", "session")
+
+        if (data === null) {
+            storage.setItem("isLoggedIn", false, "session")
+            set({ isLoggedIn: false })
+            return
+        }
+
+        set({ isLoggedIn: data })
     }
 }))
 

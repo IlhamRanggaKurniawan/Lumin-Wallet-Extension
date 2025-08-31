@@ -3,6 +3,7 @@ import Input from "@/components/Input"
 import { Button } from "@/components/ui/button"
 import { importOrCreateWallet } from "@/lib/account"
 import useAuthStore from "@/lib/store/authStore"
+import { storage } from "@/lib/utils/storage"
 import { Eye, EyeOff, LockKeyhole } from "lucide-react"
 import { useState } from "react"
 import { useNavigate } from "react-router"
@@ -18,12 +19,12 @@ const NewWallet = () => {
         confirmPassword: false
     })
     const navigate = useNavigate()
-    const {toggleLoggedIn} = useAuthStore()
+    const { login } = useAuthStore()
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if(password.newPassword.length < 8) {
+        if (password.newPassword.length < 8) {
             return setError("Password should be minimum 8 characters")
         }
 
@@ -33,8 +34,9 @@ const NewWallet = () => {
 
         const data = await importOrCreateWallet(password.newPassword)
 
-        toggleLoggedIn()
-        chrome.runtime.sendMessage({ type: "SET_MNEMONIC", value: data })
+        login()
+
+        await storage.setItem("mnemonic", data, "local")
 
         navigate("/")
     }
