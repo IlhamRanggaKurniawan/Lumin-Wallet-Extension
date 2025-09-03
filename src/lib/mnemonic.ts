@@ -2,7 +2,7 @@ import { english, generateMnemonic } from "viem/accounts"
 import { decryptData, deriveKey, encryptData, getRandomBytes } from "./utils/crypto"
 import { fromHex, toHex } from "./utils/hex"
 
-type encryptedMnemonic = {
+export type encryptedMnemonic = {
     ciphertext: string,
     iv: string,
     salt: string

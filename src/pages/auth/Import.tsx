@@ -2,8 +2,9 @@ import Header from '@/components/Header'
 import Input from '@/components/Input'
 import PhraseInput from '@/components/PhraseInput'
 import { Button } from '@/components/ui/button'
-import { importOrCreateWallet, validateMnemonicPhrase } from '@/lib/account'
+import { importOrCreateWallet, validateMnemonicPhrase } from '@/lib/mnemonic'
 import useAuthStore from '@/lib/store/authStore'
+import { useWalletStore } from '@/lib/store/walletStore'
 import { storage } from '@/lib/utils/storage'
 import { Eye, EyeOff, FileLock2, LockKeyhole } from 'lucide-react'
 import { useState } from 'react'
@@ -23,6 +24,7 @@ const Import = () => {
     })
     const navigate = useNavigate()
     const { login } = useAuthStore()
+    const { setAddress} = useWalletStore()
 
     const handleChange = (index: number, value: string) => {
         const cleaned = value.trim().split(" ")[0] || ""
@@ -77,6 +79,7 @@ const Import = () => {
         login()
 
         await storage.setItem("mnemonic", data, "local")
+        setAddress("0xcD2bE3b031a88445ff28e99685eEf01B24833399")
 
         navigate("/")
     }

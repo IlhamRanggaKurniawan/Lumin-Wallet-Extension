@@ -5,7 +5,7 @@ import Input from '../Input'
 import { Button } from '../ui/button'
 import { useNavigate } from 'react-router'
 import { storage } from '@/lib/utils/storage'
-import { validatePassword } from '@/lib/account'
+import { validatePassword } from '@/lib/mnemonic'
 
 const PhraseValidationDialog = () => {
     const [showPassword, setShowPassword] = useState(false)

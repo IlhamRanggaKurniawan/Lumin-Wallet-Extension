@@ -1,8 +1,9 @@
 import Header from "@/components/Header"
 import Input from "@/components/Input"
 import { Button } from "@/components/ui/button"
-import { importOrCreateWallet } from "@/lib/account"
+import { importOrCreateWallet } from "@/lib/mnemonic"
 import useAuthStore from "@/lib/store/authStore"
+import { useWalletStore } from "@/lib/store/walletStore"
 import { storage } from "@/lib/utils/storage"
 import { Eye, EyeOff, LockKeyhole } from "lucide-react"
 import { useState } from "react"
@@ -20,6 +21,8 @@ const NewWallet = () => {
     })
     const navigate = useNavigate()
     const { login } = useAuthStore()
+    const { setAddress } = useWalletStore()
+
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -37,6 +40,7 @@ const NewWallet = () => {
         login()
 
         await storage.setItem("mnemonic", data, "local")
+        setAddress("0xcD2bE3b031a88445ff28e99685eEf01B24833399")
 
         navigate("/")
     }

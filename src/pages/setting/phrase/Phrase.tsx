@@ -1,7 +1,7 @@
 import Header from "@/components/Header"
 import SeedPhrase from "@/components/SeedPhrase"
 import { Button } from "@/components/ui/button"
-import { getMnemonic } from "@/lib/account"
+import { getMnemonic } from "@/lib/mnemonic"
 import { storage } from "@/lib/utils/storage"
 import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router"
@@ -13,7 +13,7 @@ const Phrase = () => {
 
     useEffect(() => {
         const fetchMnemonic = async () => {
-            
+
             if (location.state === null) {
                 return navigate("/setting/phrase/warning", { replace: true })
             }

@@ -1,8 +1,15 @@
 import { Link } from 'react-router'
 import Avatar from './Avatar'
 import { Copy, Settings } from 'lucide-react'
+import { useWalletStore } from '@/lib/store/walletStore'
 
 const Profile = () => {
+    const { address } = useWalletStore()
+
+    const handleCopyAddress = () => {
+        navigator.clipboard.writeText(address || "")
+    }
+
     return (
         <div className='w-full space-y-2 pb-4'>
             <div className='flex justify-between items-center'>
@@ -12,9 +19,9 @@ const Profile = () => {
                 </Link>
             </div>
             <div>
-                <h2 className='text-lg font-semibold'>Ilham Rangga</h2>
-                <div className='text-zinc-500 flex items-center gap-2 text-base cursor-pointer'>
-                    <p>0xcD2b...3399</p>
+                <h2 className='text-lg font-semibold'>Wallet 1</h2>
+                <div onClick={() => handleCopyAddress()} className='text-zinc-500 flex items-center gap-2 text-base cursor-pointer'>
+                    <p>{address?.slice(0, 6)}...{address?.slice(-4)}</p>
                     <Copy className='size-4' />
                 </div>
             </div>

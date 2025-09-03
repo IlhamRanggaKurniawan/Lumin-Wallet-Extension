@@ -1,12 +1,18 @@
+import { useBalanceStore } from "@/lib/store/balanceStore"
 import TokenCard from "../cards/TokenCard"
 import { TabsContent } from "../ui/tabs"
 
 const TokenTab = () => {
+    const { ethBalance, tokens } = useBalanceStore()
+
     return (
         <TabsContent value='token' className='space-y-2'>
-            <TokenCard amount={20.1} imageUrl='token/usdc.png' name='USDC' symbol='USDC' />
-            <TokenCard amount={0.1} imageUrl='token/ethereum.png' name='Ethereum' symbol='ETH' />
-            <TokenCard amount={10} imageUrl='token/usdt.png' name='USDT' symbol='USDT' />
+            {ethBalance && (
+                <TokenCard amount={ethBalance} imageUrl='token/ethereum.png' name='Ethereum' symbol='ETH' />
+            )}
+            {tokens.length > 0 && tokens.map((token) => (
+                <TokenCard key={token.tokenAddress} amount={token.tokenBalance} imageUrl={token.metadata.logo || ""} name={token.metadata.name} symbol={token.metadata.symbol} />
+            ))}
         </TabsContent>
     )
 }

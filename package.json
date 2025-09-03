@@ -4,11 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "ext": "nodemon --watch src --ext ts,tsx,js,jsx --exec \"vite build --mode extension\"",
+    "ext": "tsc -b && vite build --config vite.config.bg.ts",
     "dev": "vite",
     "build": "tsc -b && vite build --mode extension",
+    "build:all": "npm run build && npm run ext",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "watch": "nodemon --watch src --ext ts,tsx,js,jsx --exec \"npm run build:all\""
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",
@@ -16,10 +18,13 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tabs": "^1.1.13",
     "@tailwindcss/vite": "^4.1.12",
+    "axios": "^1.11.0",
     "chrome-types": "^0.1.372",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "install": "^0.13.0",
     "lucide-react": "^0.541.0",
+    "npm": "^11.5.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router": "^7.8.2",

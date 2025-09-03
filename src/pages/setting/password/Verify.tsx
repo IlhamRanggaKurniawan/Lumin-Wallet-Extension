@@ -1,7 +1,7 @@
 import Header from '@/components/Header'
 import Input from '@/components/Input'
 import { Button } from '@/components/ui/button'
-import { validatePassword } from '@/lib/account'
+import { validatePassword } from '@/lib/mnemonic'
 import { storage } from '@/lib/utils/storage'
 import { Eye, EyeOff } from 'lucide-react'
 import { useState } from 'react'

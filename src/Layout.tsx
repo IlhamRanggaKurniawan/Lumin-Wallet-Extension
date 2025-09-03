@@ -3,11 +3,14 @@ import { Outlet, useNavigate } from 'react-router'
 import { useEffect, useState } from 'react'
 import useAuthStore from './lib/store/authStore'
 import { storage } from './lib/utils/storage'
+import { useBalanceStore } from './lib/store/balanceStore'
 
 export const Layout = () => {
     const { isLoggedIn } = useAuthStore()
     const [mnemonic, setMnemonic] = useState(null)
     const navigate = useNavigate()
+
+    const fetchBalances = useBalanceStore((state) => state.fetchBalances)
 
     useEffect(() => {
         const getData = async () => {
@@ -17,6 +20,12 @@ export const Layout = () => {
         }
         getData()
     }, [])
+
+    useEffect(() => {
+        if(mnemonic && isLoggedIn) {
+            fetchBalances("0xcD2bE3b031a88445ff28e99685eEf01B24833399")
+        }
+    },[isLoggedIn, mnemonic])
 
     useEffect(() => {
         if (mnemonic && (isLoggedIn && isLoggedIn !== null)) {
@@ -29,8 +38,6 @@ export const Layout = () => {
     }, [isLoggedIn, mnemonic])
 
     if (isLoggedIn === null) {
-        console.log({isLoggedIn})
-        console.log({mnemonic})
         return null
     }
 

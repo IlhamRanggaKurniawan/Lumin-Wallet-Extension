@@ -11,6 +11,8 @@ import Onboarding from "./pages/Onboarding"
 import NewWallet from "./pages/auth/NewWallet"
 import Import from "./pages/auth/Import"
 import Login from "./pages/auth/Login"
+import Send from "./pages/transaction/Send"
+import Receive from "./pages/transaction/Receive"
 
 
 const App = () => {
@@ -30,6 +32,8 @@ const App = () => {
             <Route path="onboarding/create" element={<NewWallet />} />
             <Route path="onboarding/import" element={<Import />} />
             <Route path="login" element={<Login />} />
+            <Route path="transaction/send" element={<Send />} />
+            <Route path="transaction/send" element={<Receive />} />
           </Route>
         </Routes>
       </HashRouter>

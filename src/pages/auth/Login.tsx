@@ -1,8 +1,10 @@
 import ForgotPasswordDialog from "@/components/dialog/ForgotPasswordDialog"
 import Input from "@/components/Input"
 import { Button } from "@/components/ui/button"
-import { validatePassword } from "@/lib/account"
+import { validatePassword } from "@/lib/mnemonic"
 import useAuthStore from "@/lib/store/authStore"
+import { useWalletStore } from "@/lib/store/walletStore"
+import { sendMessage } from "@/lib/utils/message"
 import { storage } from "@/lib/utils/storage"
 import { Eye, EyeOff, University } from "lucide-react"
 import { useState } from "react"
@@ -12,8 +14,9 @@ const Login = () => {
     const [password, setPassword] = useState("")
     const [showPassword, setShowPassword] = useState(false)
     const [error, setError] = useState("")
-    const {login : loginFunction} = useAuthStore()
+    const { login } = useAuthStore()
     const navigate = useNavigate()
+    const { setAddress } = useWalletStore()
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         try {
@@ -23,13 +26,15 @@ const Login = () => {
 
             const isValid = await validatePassword(password, encryptedMnemonic)
 
-            loginFunction()
-
             if (isValid) {
+                login()
+                await sendMessage({ type: "SET_ACCOUNT", password })
+                setAddress("0xcD2bE3b031a88445ff28e99685eEf01B24833399")
                 navigate("/", { replace: true })
             }
-        } catch {
+        } catch (error) {
             setError("Wrong Password")
+            console.log(error)
         }
 
     }
@@ -54,7 +59,7 @@ const Login = () => {
                         type={showPassword ? "text" : "password"}
                         handleClick={() => setShowPassword(!showPassword)}
                     />
-                     <p className="text-red-500 text-center text-sm font-light">{error}</p>
+                    <p className="text-red-500 text-center text-sm font-light">{error}</p>
                 </div>
             </div>
             <div className="space-y-3">
