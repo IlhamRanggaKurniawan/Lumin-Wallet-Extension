@@ -1,6 +1,6 @@
 import Header from '@/components/Header'
-import Input from '@/components/Input'
-import PhraseInput from '@/components/PhraseInput'
+import Input from '@/components/input/Input'
+import PhraseInput from '@/components/input/PhraseInput'
 import { Button } from '@/components/ui/button'
 import { importOrCreateWallet, validateMnemonicPhrase } from '@/lib/mnemonic'
 import useAuthStore from '@/lib/store/authStore'

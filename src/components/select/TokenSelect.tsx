@@ -1,18 +1,52 @@
-import { useBalanceStore, type token } from '@/lib/store/balanceStore'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
-import { useState } from 'react'
+import { useBalanceStore } from '@/lib/store/balanceStore'
+import { Select, SelectContent, SelectItem, SelectTrigger } from '../ui/select'
+import { useTransferStore } from '@/lib/store/transferStore'
 
 const TokenSelect = () => {
-    const [token, setToken] = useState("")
     const { ethBalance, tokens } = useBalanceStore()
+    const { selectedToken, setSelectedToken } = useTransferStore()
+
+    const selectedValue = selectedToken?.tokenAddress === "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" ? "ETH" : selectedToken?.metadata.symbol
+
+    const handleChange = (value: string) => {
+        if (value === "ETH") {
+            setSelectedToken({
+                tokenAddress: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+                tokenBalance: ethBalance,
+                metadata: {
+                    symbol: "ETH",
+                    name: "Ethereum",
+                    decimals: 18,
+                    logo: "token/ethereum.png"
+                }
+            })
+        } else {
+            const token = tokens.find((t) => t.tokenAddress === value)
+            if (token) setSelectedToken(token)
+        }
+    }
 
     return (
-        <Select value={token} onValueChange={setToken}>
-            <SelectTrigger className="cursor-pointer w-fit">
-                <SelectValue />
+        <Select value={selectedValue} onValueChange={handleChange}>
+            <SelectTrigger className="cursor-pointer w-full !h-16 rounded-2xl !bg-background border-4">
+                {selectedToken && (
+                    <div className='flex items-center gap-4'>
+                        <div className='aspect-square w-10 rounded-full overflow-hidden'>
+                            {selectedToken.metadata.logo ? (
+                                <img src={selectedToken.metadata.logo} />
+                            ) : (
+                                <div className="w-full h-full flex items-center justify-center bg-primary text-background">Logo</div>
+                            )}
+                        </div>
+                        <div className='text-left'>
+                            <p className='font-semibold text-base'>{selectedToken.metadata.name}</p>
+                            <p className='text-sm'>{selectedToken.metadata.symbol}</p>
+                        </div>
+                    </div>
+                )}
             </SelectTrigger>
             <SelectContent>
-                <SelectItem value={"eth"}>
+                <SelectItem value={"ETH"}>
                     Ethereum
                 </SelectItem>
                 {tokens.map((token) => (

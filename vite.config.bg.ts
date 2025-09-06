@@ -3,12 +3,17 @@ import path from "path"
 
 export default defineConfig({
   build: {
+    outDir: "dist", // biar hasilnya tetap di folder dist
+    emptyOutDir: false, // jangan hapus hasil build utama
     lib: {
       entry: path.resolve(__dirname, "src/background.ts"),
-      formats: ["cjs"],
+      formats: ["es"], // biar compatible dengan service_worker type: module
       fileName: () => "background.js",
     },
-    outDir: "dist",
-    emptyOutDir: false,
+    rollupOptions: {
+      output: {
+        manualChunks: undefined, // pastikan single file
+      },
+    },
   },
 })

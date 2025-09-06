@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog'
 import { Eye, EyeOff, LockKeyhole } from 'lucide-react'
-import Input from '../Input'
+import Input from '../input/Input'
 import { Button } from '../ui/button'
 import { useNavigate } from 'react-router'
 import { storage } from '@/lib/utils/storage'

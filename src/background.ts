@@ -2,6 +2,7 @@
 import { mnemonicToAccount, type HDAccount } from "viem/accounts"
 import { getMnemonic, type encryptedMnemonic } from "../src/lib/mnemonic"
 import type { TransactionSerializable } from "viem";
+import client from "./lib/client";
 
 let account: HDAccount | null;
 
@@ -27,7 +28,8 @@ chrome.runtime.onMessage.addListener((message, _, sendResponse) => {
         return true
     }
 
-    if (message.type === "SIGN_TRANSACTION") {
+    if (message.type === "SEND_TRANSACTION") {
+        console.log("entry")
         const handleSignTransaction = async () => {
             try {
                 if (!account) {
@@ -35,17 +37,30 @@ chrome.runtime.onMessage.addListener((message, _, sendResponse) => {
                     return
                 }
 
-                const signedTx = await account.signTransaction(message.transaction as TransactionSerializable)
+                const nonce = await client.getTransactionCount({ address: account.address })
 
-                sendResponse({ success: true, signedTx })
+                const signedTx = await account.signTransaction({
+                    ...message.transaction,
+                    value: BigInt(message.transaction.value),
+                    gas: BigInt(message.transaction.gas),
+                    maxFeePerGas: BigInt(message.transaction.maxFeePerGas),
+                    maxPriorityFeePerGas: BigInt(message.transaction.maxPriorityFeePerGas),
+                    nonce: BigInt(nonce)
+                } as TransactionSerializable)
+
+                console.log({ signedTx })
+
+                const txHash = await client.sendRawTransaction({ serializedTransaction: signedTx })
+
+                console.log({ txHash })
+
+                sendResponse({ success: true, txHash })
             } catch (err: any) {
-                throw new Error(err)
+                sendResponse({ success: false, error: err })
             }
-
         }
-
-
         handleSignTransaction()
+
         return true
     }
 })

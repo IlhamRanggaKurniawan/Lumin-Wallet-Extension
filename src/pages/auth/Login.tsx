@@ -1,5 +1,5 @@
 import ForgotPasswordDialog from "@/components/dialog/ForgotPasswordDialog"
-import Input from "@/components/Input"
+import Input from "@/components/input/Input"
 import { Button } from "@/components/ui/button"
 import { validatePassword } from "@/lib/mnemonic"
 import useAuthStore from "@/lib/store/authStore"

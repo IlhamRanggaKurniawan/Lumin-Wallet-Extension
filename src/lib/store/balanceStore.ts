@@ -31,7 +31,7 @@ export const useBalanceStore = create<balanceStore>()((set) => ({
             const [ethBal, tokenByWallet] = await Promise.all([
                 formatEther(await client.getBalance({ address })),
                 axios.get(`https://crypto-data-pi.vercel.app/api/tokens?address=${address}`)
-            ])
+            ])   
 
             set({
                 ethBalance: ethBal,

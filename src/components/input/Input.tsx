@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils"
 import { type LucideProps } from "lucide-react"
 
 type inputProps = React.InputHTMLAttributes<HTMLInputElement> & {
@@ -21,7 +22,10 @@ const Input = ({ Icon, handleClick, ...props }: inputProps) => {
             ) : (
                 <input
                     {...props}
-                    className='h-14 w-full rounded-xl px-4 border bg-accent duration-300 text-sm border-zinc-500 focus:outline-none focus:bg-background'
+                    className={cn(
+                        'h-14 w-full rounded-xl px-4 border bg-accent duration-300 text-sm border-zinc-500 focus:outline-none focus:bg-background',
+                        props.className
+                    )}
                 />
             )}
         </>

@@ -13,6 +13,7 @@ import Import from "./pages/auth/Import"
 import Login from "./pages/auth/Login"
 import Send from "./pages/transaction/Send"
 import Receive from "./pages/transaction/Receive"
+import { Toaster } from "./components/ui/sonner"
 
 
 const App = () => {
@@ -33,10 +34,11 @@ const App = () => {
             <Route path="onboarding/import" element={<Import />} />
             <Route path="login" element={<Login />} />
             <Route path="transaction/send" element={<Send />} />
-            <Route path="transaction/send" element={<Receive />} />
+            <Route path="transaction/receive" element={<Receive />} />
           </Route>
         </Routes>
       </HashRouter>
+      <Toaster position="top-center" richColors/>
     </ThemeProvider>
   )
 }

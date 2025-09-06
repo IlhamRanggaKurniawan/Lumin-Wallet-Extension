@@ -1,5 +1,5 @@
 import Header from "@/components/Header"
-import Input from "@/components/Input"
+import Input from "@/components/input/Input"
 import { Button } from "@/components/ui/button"
 import { getMnemonic, importOrCreateWallet } from "@/lib/mnemonic"
 import { storage } from "@/lib/utils/storage"
