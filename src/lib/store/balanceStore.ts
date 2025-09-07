@@ -1,7 +1,8 @@
 import { create } from "zustand"
 import { formatEther, type Hex } from "viem"
-import axios from "axios"
 import client from "../client"
+import { getTokensByWallet } from "../token"
+import { getTransactionHistory } from "../transactions"
 
 export type token = {
     tokenAddress: Hex
@@ -15,14 +16,12 @@ export type token = {
 }
 
 type balanceStore = {
-    ethBalance: string,
     tokens: token[],
     loading: boolean,
     fetchBalances: (address: Hex) => Promise<void>
 }
 
 export const useBalanceStore = create<balanceStore>()((set) => ({
-    ethBalance: "",
     tokens: [],
     loading: false,
     fetchBalances: async (address) => {
@@ -30,14 +29,25 @@ export const useBalanceStore = create<balanceStore>()((set) => ({
             set({ loading: true })
             const [ethBal, tokenByWallet] = await Promise.all([
                 formatEther(await client.getBalance({ address })),
-                axios.get(`https://crypto-data-pi.vercel.app/api/tokens?address=${address}`)
-            ])   
+                getTokensByWallet(address)
+            ])
 
-            set({
-                ethBalance: ethBal,
-                tokens: tokenByWallet.data
-            })
+            const eth: token = {
+                tokenAddress: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+                tokenBalance: ethBal,
+                metadata: {
+                    symbol: "ETH",
+                    name: "Ethereum",
+                    decimals: 18,
+                    logo: "token/ethereum.png"
+                }
+            }
 
+            await getTransactionHistory(address)
+
+            const assets = [eth, ...tokenByWallet]
+
+            set({tokens: assets})
         } catch (error) {
             console.error(error)
         } finally {

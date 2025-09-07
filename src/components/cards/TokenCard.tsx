@@ -14,7 +14,7 @@ const TokenCard = ({ amount, imageUrl, name, symbol }: tokenCardProps) => {
     }
 
     return (
-        <div className='w-full rounded-md flex gap-2 p-4 bg-background items-center border transition-all duration-300 cursor-pointer hover:bg-white/10'>
+        <div className='w-full rounded-md flex gap-2 p-4 bg-background items-center border transition-all duration-300 cursor-pointer hover:bg-primary/10'>
             <div className='w-12 aspect-square rounded-full overflow-hidden'>
                 {imageUrl ? (
                     <img src={imageUrl} />

@@ -3,27 +3,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger } from '../ui/select'
 import { useTransferStore } from '@/lib/store/transferStore'
 
 const TokenSelect = () => {
-    const { ethBalance, tokens } = useBalanceStore()
+    const { tokens } = useBalanceStore()
     const { selectedToken, setSelectedToken } = useTransferStore()
 
-    const selectedValue = selectedToken?.tokenAddress === "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" ? "ETH" : selectedToken?.metadata.symbol
+    const selectedValue = selectedToken?.metadata.symbol
 
     const handleChange = (value: string) => {
-        if (value === "ETH") {
-            setSelectedToken({
-                tokenAddress: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-                tokenBalance: ethBalance,
-                metadata: {
-                    symbol: "ETH",
-                    name: "Ethereum",
-                    decimals: 18,
-                    logo: "token/ethereum.png"
-                }
-            })
-        } else {
-            const token = tokens.find((t) => t.tokenAddress === value)
-            if (token) setSelectedToken(token)
-        }
+        const token = tokens.find((t) => t.tokenAddress === value)
+        if (token) setSelectedToken(token)
+
     }
 
     return (
@@ -46,9 +34,6 @@ const TokenSelect = () => {
                 )}
             </SelectTrigger>
             <SelectContent>
-                <SelectItem value={"ETH"}>
-                    Ethereum
-                </SelectItem>
                 {tokens.map((token) => (
                     <SelectItem value={token.tokenAddress} key={token.tokenAddress}>
                         {token.metadata.name}

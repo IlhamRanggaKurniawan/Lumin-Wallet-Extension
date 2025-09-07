@@ -1,6 +1,6 @@
 import Profile from '@/components/Profile'
 import ActivityTab from '@/components/tabs/ActivityTab'
-import NFTTab from '@/components/tabs/NFTTab'
+// import NFTTab from '@/components/tabs/NFTTab'
 import TokenTab from '@/components/tabs/TokenTab'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -29,11 +29,11 @@ const Home = () => {
             <Tabs defaultValue='token'>
                 <TabsList className='w-full mb-3'>
                     <TabsTrigger value='token'>Token</TabsTrigger>
-                    <TabsTrigger value='nft'>NFTs</TabsTrigger>
+                    {/* <TabsTrigger value='nft'>NFTs</TabsTrigger> */}
                     <TabsTrigger value='activity'>Activity</TabsTrigger>
                 </TabsList>
                 <TokenTab />
-                <NFTTab />
+                {/* <NFTTab /> */}
                 <ActivityTab />
             </Tabs>
         </div>

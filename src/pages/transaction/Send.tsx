@@ -8,7 +8,7 @@ import { useTransferStore } from "@/lib/store/transferStore"
 import { useWalletStore } from "@/lib/store/walletStore"
 import { sendTransaction } from "@/lib/utils/sign"
 import { toast } from "sonner"
-import { isAddress, parseEther } from "viem"
+import { isAddress } from "viem"
 
 const Send = () => {
   const { amount, recipient, selectedToken, reset } = useTransferStore()
@@ -37,21 +37,16 @@ const Send = () => {
       return toast.error("Amount exceeds balance")
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const tx: any = {
-      chainId: 11155111,
-      to: recipient,
-      value: parseEther(amount).toString(),
-      gas: 21000,
-      maxFeePerGas: 20_000_000_000,
-      maxPriorityFeePerGas: 1_500_000_000
+
+    const res = await sendTransaction({ amount, decimals: selectedToken.metadata.decimals, tokenAddress: selectedToken.tokenAddress, recipient })
+
+    if (res.success === true) {
+      fetchBalances(address!)
+      reset()
+      return toast.success("Transaction Success")
     }
 
-    await sendTransaction(tx)
-
-    console.log("Sending:", { recipient, amount, token: selectedToken })
-    fetchBalances(address!)
-    reset()
+    toast.error("Transaction Failed")
   }
 
 
