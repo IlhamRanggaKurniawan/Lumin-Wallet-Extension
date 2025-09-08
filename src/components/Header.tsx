@@ -1,5 +1,5 @@
+import { Link } from '@tanstack/react-router'
 import { ArrowLeft } from 'lucide-react'
-import { Link } from 'react-router'
 
 const Header = ({ title, href }: { title: string, href?: string }) => {
     return (

@@ -1,7 +1,7 @@
-import { Link } from 'react-router'
 import Avatar from './Avatar'
 import { Copy, Settings } from 'lucide-react'
 import { useWalletStore } from '@/lib/store/walletStore'
+import { Link } from '@tanstack/react-router'
 
 const Profile = () => {
     const { address } = useWalletStore()
@@ -14,7 +14,7 @@ const Profile = () => {
         <div className='w-full space-y-2 pb-4'>
             <div className='flex justify-between items-center'>
                 <Avatar />
-                <Link to={"./setting"}>
+                <Link to={"/setting"}>
                     <Settings className='transition-all duration-500 hover:rotate-180 hover:text-[#FFBC4C] size-6 cursor-pointer' />
                 </Link>
             </div>

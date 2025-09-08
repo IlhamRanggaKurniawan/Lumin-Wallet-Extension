@@ -3,14 +3,16 @@ import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog'
 import { Eye, EyeOff, LockKeyhole } from 'lucide-react'
 import Input from '../input/Input'
 import { Button } from '../ui/button'
-import { useNavigate } from 'react-router'
 import { storage } from '@/lib/utils/storage'
 import { validatePassword } from '@/lib/mnemonic'
+import { useNavigate } from '@tanstack/react-router'
+import { usePasswordStore } from '@/lib/store/passwordStore'
 
 const PhraseValidationDialog = () => {
     const [showPassword, setShowPassword] = useState(false)
     const [password, setPassword] = useState("")
     const [error, setError] = useState("")
+    const { setPassword: setStorePassword } = usePasswordStore()
 
     const validate = async () => {
         try {
@@ -19,7 +21,8 @@ const PhraseValidationDialog = () => {
             const isValid = await validatePassword(password, encryptedMnemonic)
 
             if (isValid) {
-                navigate("/setting/phrase", { replace: true, state: { password } })
+                setStorePassword(password)
+                navigate({ to: "/setting/phrase", replace: true })
             }
         } catch {
             setError("Wrong Password")

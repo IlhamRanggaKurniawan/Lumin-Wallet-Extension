@@ -2,8 +2,8 @@ import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog'
 import { LockKeyhole } from 'lucide-react'
 import { Button } from '../ui/button'
 import { useState } from 'react'
-import { useNavigate } from 'react-router'
 import { storage } from '@/lib/utils/storage'
+import { useNavigate } from '@tanstack/react-router'
 
 const ForgotPasswordDialog = () => {
     const [warningStep, setWarningStep] = useState(1)
@@ -13,7 +13,7 @@ const ForgotPasswordDialog = () => {
         await storage.setItem("isLoggedIn", false, "session")
         await storage.removeItem("mnemonic", "local")
 
-        navigate("/onboarding", { replace: true })
+        navigate({ to: "/onboarding", replace: true })
     }
 
     return (

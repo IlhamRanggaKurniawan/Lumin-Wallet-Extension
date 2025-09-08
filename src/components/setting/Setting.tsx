@@ -1,6 +1,6 @@
+import { Link } from '@tanstack/react-router'
 import { ChevronRight, type LucideProps } from 'lucide-react'
 import React, { type JSX } from 'react'
-import { Link } from 'react-router'
 
 type settingProps = {
     title: string,

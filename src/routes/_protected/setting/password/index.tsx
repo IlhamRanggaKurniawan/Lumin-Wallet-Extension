@@ -2,14 +2,21 @@ import Header from '@/components/Header'
 import Input from '@/components/input/Input'
 import { Button } from '@/components/ui/button'
 import { validatePassword } from '@/lib/mnemonic'
+import { usePasswordStore } from '@/lib/store/passwordStore'
 import { storage } from '@/lib/utils/storage'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { Eye, EyeOff } from 'lucide-react'
 import { useState } from 'react'
-import { useNavigate } from 'react-router'
 
-const Verify = () => {
+export const Route = createFileRoute('/_protected/setting/password/')({
+    component: RouteComponent,
+})
+
+function RouteComponent() {
     const [password, setPassword] = useState("")
     const [showPassword, setShowPassword] = useState(false)
+    const { setPassword: setStorePassword } = usePasswordStore()
+
 
     const navigate = useNavigate()
 
@@ -21,7 +28,8 @@ const Verify = () => {
         const isValid = await validatePassword(password, encryptedMnemonic)
 
         if (isValid) {
-            navigate("/setting/password/update", { replace: true, state: { password } })
+            setStorePassword(password)
+            navigate({ to: "/setting/password/update", replace: true })
         }
     }
 
@@ -43,9 +51,6 @@ const Verify = () => {
             <Button className="absolute bottom-0 w-full py-6">
                 Continue
             </Button>
-
         </form>
     )
 }
-
-export default Verify
