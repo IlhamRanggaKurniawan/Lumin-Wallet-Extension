@@ -6,10 +6,11 @@ import "./index.css"
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
 import { ThemeProvider } from './components/theme-provider'
+import { Toaster } from './components/ui/sonner'
 
 // Create a new router instance
-const router = createRouter({ 
-  routeTree, 
+const router = createRouter({
+  routeTree,
   history: createHashHistory()
 })
 
@@ -27,6 +28,7 @@ if (!rootElement.innerHTML) {
     <StrictMode>
       <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
         <RouterProvider router={router} />
+        <Toaster className='w-fit' richColors position='top-center'/>
       </ThemeProvider>
     </StrictMode>,
   )

@@ -18,12 +18,14 @@ export type token = {
 type balanceStore = {
     tokens: token[],
     loading: boolean,
+    hasFetched: boolean
     fetchBalances: (address: Hex) => Promise<void>
 }
 
 export const useBalanceStore = create<balanceStore>()((set) => ({
     tokens: [],
     loading: false,
+    hasFetched: false,
     fetchBalances: async (address) => {
         try {
             set({ loading: true })
@@ -47,11 +49,11 @@ export const useBalanceStore = create<balanceStore>()((set) => ({
 
             const assets = [eth, ...tokenByWallet]
 
-            set({tokens: assets})
+            set({ tokens: assets })
         } catch (error) {
             console.error(error)
         } finally {
-            set({ loading: false })
+            set({ loading: false, hasFetched: true })
         }
     }
 }))

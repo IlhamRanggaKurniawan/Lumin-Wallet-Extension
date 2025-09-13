@@ -1,12 +1,7 @@
+import { handleCopy } from '@/lib/utils/utils'
 import { Button } from './ui/button'
 
 const SeedPhrase = ({ mnemonic }: { mnemonic: string[] }) => {
-
-    const handleCopy = () => {
-        const data = mnemonic.join(" ")
-
-        navigator.clipboard.writeText(data)
-    }
 
     return (
         <div className='w-full rounded-xl bg-accent border relative flex items-center justify-center'>
@@ -30,7 +25,7 @@ const SeedPhrase = ({ mnemonic }: { mnemonic: string[] }) => {
             </div>
             <Button
                 className='absolute -top-4 rounded-2xl text-sm text-zinc-500 bg-background border hover:bg-muted'
-                onClick={handleCopy}
+                onClick={() => handleCopy(mnemonic.join(" "))}
             >
                 Copy
             </Button>

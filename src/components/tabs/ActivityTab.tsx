@@ -1,17 +1,10 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { TabsContent } from '../ui/tabs'
 import Activity from '../Activity'
 import { useTxHistoryStore } from '@/lib/store/txHistoryStore'
-import { useWalletStore } from '@/lib/store/walletStore'
-import { useEffect } from 'react'
 
 const ActivityTab = () => {
-    const { fetchData, transactions } = useTxHistoryStore()
-    const { address } = useWalletStore()
+    const { transactions } = useTxHistoryStore()
 
-    useEffect(() => {
-        fetchData(address!)
-    }, [address])
     return (
         <TabsContent value='activity' className='space-y-2'>
             {transactions && transactions.map((tx) => (
