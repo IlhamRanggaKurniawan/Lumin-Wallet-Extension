@@ -6,6 +6,12 @@ import client from "./lib/client";
 
 let account: HDAccount | null;
 
+chrome.alarms.onAlarm.addListener(() => {
+ 
+});
+
+chrome.alarms.create("KeepAlive", { periodInMinutes: 0.4 })
+
 chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true })
 
 chrome.runtime.onMessage.addListener((message, _, sendResponse) => {

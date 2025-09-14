@@ -6,7 +6,8 @@
     "permissions": [
         "sidePanel",
         "storage",
-        "clipboardRead"
+        "clipboardRead",
+        "alarms"
     ],
     "action": {
         "default_title": "Clcik to open panel"

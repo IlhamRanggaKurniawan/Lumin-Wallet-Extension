@@ -30,7 +30,7 @@ const protectedLayout = () => {
     return () => {
       eventSource.close();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address])
 
   return (
