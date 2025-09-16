@@ -1,10 +1,10 @@
 import ForgotPasswordDialog from '@/components/dialog/ForgotPasswordDialog'
 import Input from '@/components/input/Input'
 import { Button } from '@/components/ui/button'
-import { validatePassword } from '@/lib/mnemonic'
+import { getMnemonic, validatePassword } from '@/lib/mnemonic'
 import useAuthStore from '@/lib/store/authStore'
 import { useWalletStore } from '@/lib/store/walletStore'
-import { sendMessage } from '@/lib/utils/message'
+import { setAccount } from '@/lib/utils/sign'
 import { storage } from '@/lib/utils/storage'
 import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
 import { Eye, EyeOff, University } from 'lucide-react'
@@ -45,13 +45,17 @@ function RouteComponent() {
 
       if (isValid) {
         login()
-        await sendMessage({ type: "SET_ACCOUNT", password })
-        setAddress("0xcD2bE3b031a88445ff28e99685eEf01B24833399")
+        const encryptedMnemonic = await storage.getItem("mnemonic", "local")
+
+        const mnemonic = await getMnemonic(password, encryptedMnemonic)
+
+        const address = await setAccount(mnemonic)
+
+        setAddress(address)
         navigate({ to: "/", replace: true })
       }
-    } catch (error) {
+    } catch {
       setError("Wrong Password")
-      console.log(error)
     }
 
   }

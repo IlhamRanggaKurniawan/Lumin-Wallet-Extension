@@ -8,28 +8,32 @@ import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
 
+// only for development purpose
+import "@/lib/utils/sign"
+
 const protectedLayout = () => {
   const { fetchBalances } = useBalanceStore.getState()
   const { fetchData } = useTxHistoryStore.getState()
   const { address } = useWalletStore.getState()
 
   useEffect(() => {
-    if (!address) return
-    fetchBalances(address)
-    fetchData(address)
-
     const eventSource = new EventSource(`http://localhost:3000/events/alchemy/${address}`)
 
     eventSource.onmessage = (event) => {
       const payload = JSON.parse(event.data)
 
-      console.log(`Receive ${payload.value} ${payload.asset} from ${payload.fromAddress}`)
       toast(`Receive ${payload.value} ${payload.asset} from ${payload.fromAddress}`)
     }
 
     return () => {
       eventSource.close();
     };
+  }, [address])
+
+  useEffect(() => {
+
+    fetchBalances(address!)
+    fetchData(address!)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address])
 
@@ -42,9 +46,12 @@ export const Route = createFileRoute('/_protected')({
   loader: async () => {
     const mnemonic = await storage.getItem("mnemonic", "local")
     const { isLoggedIn } = useAuthStore.getState()
+    const { address } = useWalletStore.getState()
 
     if (!mnemonic) throw redirect({ to: '/onboarding' })
     if (mnemonic && !isLoggedIn) throw redirect({ to: '/auth/login' })
+
+    if (!address) return
   },
   component: protectedLayout
 })

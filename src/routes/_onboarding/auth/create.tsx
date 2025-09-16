@@ -1,9 +1,10 @@
 import Header from '@/components/Header'
 import Input from '@/components/input/Input'
 import { Button } from '@/components/ui/button'
-import { importOrCreateWallet } from '@/lib/mnemonic'
+import { encryptMnemonic, generateNewMnemonic } from '@/lib/mnemonic'
 import useAuthStore from '@/lib/store/authStore'
 import { useWalletStore } from '@/lib/store/walletStore'
+import { setAccount } from '@/lib/utils/sign'
 import { storage } from '@/lib/utils/storage'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { Eye, EyeOff, LockKeyhole } from 'lucide-react'
@@ -39,13 +40,15 @@ function RouteComponent() {
       return setError("Password doen't match")
     }
 
-    const data = await importOrCreateWallet(password.newPassword)
-
+    const mnemonic = generateNewMnemonic()
+    const data = await encryptMnemonic(password.newPassword, mnemonic)
+    const address = await setAccount(mnemonic)
     login()
-
+    
+    
+    
+    setAddress(address)
     await storage.setItem("mnemonic", data, "local")
-    setAddress("0xcD2bE3b031a88445ff28e99685eEf01B24833399")
-
     navigate({ to: "/" })
   }
 

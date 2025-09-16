@@ -1,7 +1,7 @@
 import Header from '@/components/Header'
 import Input from '@/components/input/Input'
 import { Button } from '@/components/ui/button'
-import { getMnemonic, importOrCreateWallet } from '@/lib/mnemonic'
+import { getMnemonic } from '@/lib/mnemonic'
 import { usePasswordStore } from '@/lib/store/passwordStore'
 import { storage } from '@/lib/utils/storage'
 import { createFileRoute, useLocation, useNavigate } from '@tanstack/react-router'
@@ -45,9 +45,7 @@ function RouteComponent() {
 
     const mnemonic = await getMnemonic(storePassword, encryptedMnemonic)
 
-    const newEncrypedMnemonic = await importOrCreateWallet(password.newPassword, mnemonic)
-
-    await storage.setItem("mnemonic", newEncrypedMnemonic, "local")
+    encryptedMnemonic(password.newPassword, mnemonic)
 
     navigate({ to: "/", replace: true })
   }

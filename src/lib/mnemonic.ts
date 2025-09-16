@@ -1,6 +1,7 @@
 import { english, generateMnemonic } from "viem/accounts"
 import { decryptData, deriveKey, encryptData, getRandomBytes } from "./utils/crypto"
 import { fromHex, toHex } from "./utils/hex"
+import { storage } from "./utils/storage"
 
 export type encryptedMnemonic = {
     ciphertext: string,
@@ -8,12 +9,11 @@ export type encryptedMnemonic = {
     salt: string
 }
 
+export const generateNewMnemonic = () => {
+    return generateMnemonic(english)
+}
 
-export const importOrCreateWallet = async (password: string, phrase?: string): Promise<encryptedMnemonic> => {
-    if (!phrase) {
-        phrase = generateMnemonic(english)
-    }
-
+export const encryptMnemonic = async (password: string, phrase: string) => {
     const salt = getRandomBytes(16)
 
     const key = await deriveKey(password, salt)
@@ -22,11 +22,11 @@ export const importOrCreateWallet = async (password: string, phrase?: string): P
 
     const encrypted = await encryptData(phrase, key, iv)
 
-    return {
+    await storage.setItem("mnemonic", {
         ciphertext: toHex(encrypted),
         iv: toHex(iv),
         salt: toHex(salt),
-    }
+    }, "local")
 }
 
 export const getMnemonic = async (password: string, encrypted: encryptedMnemonic) => {

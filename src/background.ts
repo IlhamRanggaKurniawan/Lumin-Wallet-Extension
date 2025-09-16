@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { mnemonicToAccount, type HDAccount } from "viem/accounts"
-import { getMnemonic, type encryptedMnemonic } from "../src/lib/mnemonic"
-import type { TransactionSerializable } from "viem";
 import client from "./lib/client";
 
 let account: HDAccount | null;
 
 chrome.alarms.onAlarm.addListener(() => {
- 
+
 });
 
 chrome.alarms.create("KeepAlive", { periodInMinutes: 0.4 })
@@ -16,26 +14,18 @@ chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true })
 
 chrome.runtime.onMessage.addListener((message, _, sendResponse) => {
     if (message.type === "SET_ACCOUNT") {
-        chrome.storage.local.get(["mnemonic"], async (result) => {
-            try {
-                const password = message.password
+        try {
+            account = mnemonicToAccount(message.mnemonic, { accountIndex: 0 })
 
-                const mnemonic = await getMnemonic(password, result.mnemonic as encryptedMnemonic)
-
-                account = mnemonicToAccount(mnemonic, { accountIndex: 0 })
-
-                sendResponse({ success: true, address: account.address })
-            } catch (error: any) {
-                throw new Error(error)
-            }
-        })
-
+            sendResponse({ success: true, address: account.address })
+        } catch (error: any) {
+            throw new Error(error)
+        }
 
         return true
     }
 
     if (message.type === "SEND_TRANSACTION") {
-        console.log("entry")
         const handleSignTransaction = async () => {
             try {
                 if (!account) {
@@ -52,7 +42,7 @@ chrome.runtime.onMessage.addListener((message, _, sendResponse) => {
                     maxFeePerGas: BigInt(message.transaction.maxFeePerGas),
                     maxPriorityFeePerGas: BigInt(message.transaction.maxPriorityFeePerGas),
                     nonce: BigInt(nonce)
-                } as TransactionSerializable)
+                })
 
                 console.log({ signedTx })
 

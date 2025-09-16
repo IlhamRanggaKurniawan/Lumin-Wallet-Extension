@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+// only for development purpose
 const isExtension = typeof chrome !== "undefined" && !!chrome.runtime && !!chrome.runtime.id
 
 

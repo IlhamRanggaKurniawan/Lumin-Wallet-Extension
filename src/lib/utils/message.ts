@@ -10,7 +10,6 @@ export const sendMessage = (message: any): Promise<any> => {
                 }
             })
         } catch (err) {
-            console.log(err)
             reject(err)
         }
     })

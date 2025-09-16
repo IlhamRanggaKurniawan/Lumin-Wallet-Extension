@@ -76,7 +76,5 @@ export const getTransactionHistory = async (address: Hex) => {
         }
     })
 
-    console.log(tx)
-
     return tx
 }
